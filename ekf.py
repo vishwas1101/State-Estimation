@@ -56,3 +56,108 @@ plt.plot(range(len(observation_model)), observation_model, label = "Sensor Value
 plt.plot(range(len(state_estimate)), state_estimate, label = "Estimated state")
 plt.legend()
 plt.show()
+
+
+####Velocity####
+def fv(x):
+	return x**3/3
+
+def diff_fv(x):
+	return x**2
+
+true_vel = [fv(x) for x in range(0, 50)]
+
+process_noise_vel = np.random.normal(0, 200, 50)
+observe_noise_vel = np.random.normal(0, 500, 50)
+
+simulated_vel_model = true_vel 
+observation_model_vel = true_vel + observe_noise_vel
+
+#Q
+cov_process_noise_vel = np.cov(process_noise_vel)
+#R
+cov_observe_noise_vel = np.cov(observe_noise_vel)
+
+covariance_estimate_vel = [0]
+state_estimate_vel = []
+state_estimate_vel.append(true_vel[0])
+
+for k in range(1, 50):
+	predicted_state_estimate_vel = fv(k-1)
+
+	state_transition_vel = diff_fv(state_estimate_vel[k-1])
+	observation_transition_vel = diff_fv(predicted_state_estimate_vel)
+
+	predicted_covariance_estimate_vel = state_transition_vel * covariance_estimate_vel[k-1] * np.transpose(state_transition_vel) + cov_process_noise_vel
+
+	measurement_residual_vel = observation_model_vel[k] - fv(predicted_state_estimate_vel)
+	covariance_residual_vel = observation_transition_vel * predicted_covariance_estimate_vel * np.transpose(observation_transition_vel) + cov_observe_noise_vel
+
+	kalman_gain_vel = predicted_covariance_estimate_vel * np.transpose(observation_transition_vel) * (covariance_residual_vel**-1)
+
+	updated_state_estimate_vel = predicted_state_estimate_vel + kalman_gain_vel * measurement_residual_vel
+	updated_covariance_estimate_vel = (1 - kalman_gain_vel * observation_transition_vel) * predicted_covariance_estimate_vel
+
+	state_estimate_vel.append(updated_state_estimate_vel) 
+	covariance_estimate_vel.append(updated_covariance_estimate_vel)
+'''
+plt.plot(range(len(true_vel)), true_vel, label = "True Velocity")
+plt.plot(range(len(simulated_vel_model)), simulated_vel_model, label = "Velocity Model")
+plt.plot(range(len(observation_model_vel)), observation_model_vel, label = "Sensor Value for Velocity")
+plt.plot(range(len(state_estimate_vel)), state_estimate_vel, label = "Estimated state Velocity")
+plt.legend()
+plt.show()
+'''
+####Postion####
+
+def fp(x):
+	return x**4/12
+
+def diff_fp(x):
+	return x**3/3
+
+true_pos = [fp(x) for x in range(0, 50)]
+
+process_noise_pos = np.random.normal(0, 200, 50)
+observe_noise_pos = np.random.normal(0, 5000, 50)
+
+simulated_pos_model = true_pos
+observation_model_pos = true_pos + observe_noise_pos
+#Q
+cov_process_noise_pos = np.cov(process_noise_pos)
+#R
+cov_observe_noise_pos = np.cov(observe_noise_pos)
+
+covariance_estimate_pos = [0]
+state_estimate_pos = []
+state_estimate_pos.append(true_pos[0])
+
+for k in range(1, 50):
+	predicted_state_estimate_pos = fp(k-1)
+
+	state_transition_pos = diff_fp(state_estimate_vel[k-1])
+	observation_transition_pos = diff_fp(predicted_state_estimate_vel)
+
+	predicted_covariance_estimate_pos = state_transition_pos * covariance_estimate_pos[k-1] * np.transpose(state_transition_pos) + cov_process_noise_pos
+
+	measurement_residual_pos = observation_model_vel[k] - fv(predicted_state_estimate_vel)
+	covariance_residual_pos = observation_transition_pos * predicted_covariance_estimate_pos * np.transpose(observation_transition_pos) + cov_observe_noise_pos
+
+	kalman_gain_pos = predicted_covariance_estimate_pos * np.transpose(observation_transition_pos) * (covariance_residual_pos**-1)
+
+	updated_state_estimate_pos = predicted_state_estimate_pos + kalman_gain_pos * measurement_residual_pos
+	updated_covariance_estimate_pos = (1 - kalman_gain_pos * observation_transition_pos) * predicted_covariance_estimate_pos
+
+	state_estimate_pos.append(updated_state_estimate_pos) 
+	covariance_estimate_pos.append(updated_covariance_estimate_pos)
+
+'''
+plt.plot(range(len(true_pos)), true_pos, label = "True Position")
+plt.plot(range(len(simulated_pos_model)), simulated_pos_model, label = "position Model")
+plt.plot(range(len(observation_model_pos)), observation_model_pos, label = "Sensor Value for poisiton")
+plt.plot(range(len(state_estimate_pos)), state_estimate_pos, label = "Estimated state position")
+plt.legend()
+plt.show()
+'''
+
+
