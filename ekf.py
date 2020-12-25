@@ -31,7 +31,7 @@ for k in range(1,50):
 	#predict state step
 	predicted_state_estimate = f(k-1)
 
-	#jacobian
+	#calculating jacobian
 	state_transition = diff_f(state_estimate[k-1])
 	observation_transition = diff_f(predicted_state_estimate)
 
@@ -49,7 +49,6 @@ for k in range(1,50):
 
 	state_estimate.append(updated_state_estimate) 
 	covariance_estimate.append(updated_covariance_estimate)
-
 
 plt.plot(range(len(true_acc)), true_acc, label = "True Acceleration")
 plt.plot(range(len(simulated_accel_model)), simulated_accel_model, label = "Acceleration Model")
