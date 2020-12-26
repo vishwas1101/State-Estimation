@@ -31,15 +31,15 @@ for k in range(1,50):
 	#predict state step
 	predicted_state_estimate = f(k-1)
 
-	#calculating jacobian
-	state_transition = diff_f(state_estimate[k-1])
+	#calculating jacobia
+	state_transition = diff_f(k-1)
 	observation_transition = diff_f(predicted_state_estimate)
 
 	#predict covariance estimate: P_k|k-1 = F . Pk-1|k-1 . Ft + Q
 	predicted_covariance_estimate = state_transition * covariance_estimate[k-1] * np.transpose(state_transition) + cov_process_noise
 
 	#Update steps:
-	measurement_residual = observation_model[k] - f(predicted_state_estimate)
+	measurement_residual = observation_model[k] - f(k-1)
 	covariance_residual = observation_transition * predicted_covariance_estimate * np.transpose(observation_transition) + cov_observe_noise
 
 	kalman_gain = predicted_covariance_estimate * np.transpose(observation_transition) * (covariance_residual**-1)
@@ -49,6 +49,7 @@ for k in range(1,50):
 
 	state_estimate.append(updated_state_estimate) 
 	covariance_estimate.append(updated_covariance_estimate)
+
 
 plt.plot(range(len(true_acc)), true_acc, label = "True Acceleration")
 plt.plot(range(len(simulated_accel_model)), simulated_accel_model, label = "Acceleration Model")
@@ -85,12 +86,12 @@ state_estimate_vel.append(true_vel[0])
 for k in range(1, 50):
 	predicted_state_estimate_vel = fv(k-1)
 
-	state_transition_vel = diff_fv(state_estimate_vel[k-1])
+	state_transition_vel = diff_fv(k-1)
 	observation_transition_vel = diff_fv(predicted_state_estimate_vel)
 
 	predicted_covariance_estimate_vel = state_transition_vel * covariance_estimate_vel[k-1] * np.transpose(state_transition_vel) + cov_process_noise_vel
 
-	measurement_residual_vel = observation_model_vel[k] - fv(predicted_state_estimate_vel)
+	measurement_residual_vel = observation_model_vel[k] - fv(k-1)
 	covariance_residual_vel = observation_transition_vel * predicted_covariance_estimate_vel * np.transpose(observation_transition_vel) + cov_observe_noise_vel
 
 	kalman_gain_vel = predicted_covariance_estimate_vel * np.transpose(observation_transition_vel) * (covariance_residual_vel**-1)
@@ -135,12 +136,12 @@ state_estimate_pos.append(true_pos[0])
 for k in range(1, 50):
 	predicted_state_estimate_pos = fp(k-1)
 
-	state_transition_pos = diff_fp(state_estimate_vel[k-1])
+	state_transition_pos = diff_fp(k-1)
 	observation_transition_pos = diff_fp(predicted_state_estimate_vel)
 
 	predicted_covariance_estimate_pos = state_transition_pos * covariance_estimate_pos[k-1] * np.transpose(state_transition_pos) + cov_process_noise_pos
 
-	measurement_residual_pos = observation_model_vel[k] - fv(predicted_state_estimate_vel)
+	measurement_residual_pos = observation_model_vel[k] - fp(k-1)
 	covariance_residual_pos = observation_transition_pos * predicted_covariance_estimate_pos * np.transpose(observation_transition_pos) + cov_observe_noise_pos
 
 	kalman_gain_pos = predicted_covariance_estimate_pos * np.transpose(observation_transition_pos) * (covariance_residual_pos**-1)
@@ -158,6 +159,5 @@ plt.plot(range(len(observation_model_pos)), observation_model_pos, label = "Sens
 plt.plot(range(len(state_estimate_pos)), state_estimate_pos, label = "Estimated state position")
 plt.legend()
 plt.show()
+
 '''
-
-
