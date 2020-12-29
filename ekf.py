@@ -56,7 +56,7 @@ for k in range(1,50):
 	state_estimate.append(updated_state_estimate) 
 	covariance_estimate.append(updated_covariance_estimate)
 
-'''
+
 #print(state_estimate)
 plt.plot(range(len(true_acc)), true_acc, label = "True Acceleration")
 plt.plot(range(len(simulated_accel_model)), simulated_accel_model, label = "Acceleration Model")
@@ -64,7 +64,7 @@ plt.plot(range(len(observation_model)), observation_model, label = "Sensor Value
 plt.plot(range(len(state_estimate)), state_estimate, label = "Estimated state")
 plt.legend()
 plt.show()
-'''
+
 
 ####Velocity####
 def fv(x):
@@ -159,18 +159,31 @@ for k in range(1, 50):
 	state_estimate_pos.append(updated_state_estimate_pos) 
 	covariance_estimate_pos.append(updated_covariance_estimate_pos)
 
-
+'''
 plt.plot(range(len(true_pos)), true_pos, label = "True position")
 plt.plot(range(len(simulated_pos_model)), simulated_pos_model, label = "position Model")
 plt.plot(range(len(observation_model_pos)), observation_model_pos, label = "Sensor Value for position")
 plt.plot(range(len(state_estimate_pos)), state_estimate_pos, label = "Estimated state position")
 plt.legend()
 plt.show()
+'''
 
+MSE_sensor = np.sqrt(0.0083*np.sum(np.abs(np.array(observation_model) - np.array(true_acc)))**2)
+MSE_ekf = np.sqrt(0.0083*np.sum(np.abs(np.array(state_estimate) - np.array(true_acc)))**2)
 
-MSE_sensor = np.sqrt(0.0083*np.sum(np.abs(np.array(observation_model_pos) - np.array(true_pos)))**2)
-MSE_kf = np.sqrt(0.0083*np.sum(np.abs(np.array(state_estimate_pos) - np.array(true_pos)))**2)
+print("RMSE from raw sensor readings acceleration : ", MSE_sensor)
+print("RMSE from kalman filter output acceleration : ", MSE_ekf)
 
-print("RMSE from raw sensor readings : ", MSE_sensor)
-print("RMSE from kalman filter output : ", MSE_kf)
+MSE_sensor_vel = np.sqrt(0.0083*np.sum(np.abs(np.array(observation_model_vel) - np.array(true_vel)))**2)
+MSE_ekf_vel = np.sqrt(0.0083*np.sum(np.abs(np.array(state_estimate_vel) - np.array(true_vel)))**2)
+
+print("RMSE from raw sensor readings velocity : ", MSE_sensor_vel)
+print("RMSE from kalman filter output velocity : ", MSE_ekf_vel)
+
+MSE_sensor_pos = np.sqrt(0.0083*np.sum(np.abs(np.array(observation_model_pos) - np.array(true_pos)))**2)
+MSE_ekf_pos = np.sqrt(0.0083*np.sum(np.abs(np.array(state_estimate_pos) - np.array(true_pos)))**2)
+
+print("RMSE from raw sensor readings position : ", MSE_sensor_pos)
+print("RMSE from kalman filter output position : ", MSE_ekf_pos)
+
 
