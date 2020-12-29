@@ -108,14 +108,14 @@ for k in range(1, 50):
 
 	state_estimate_vel.append(updated_state_estimate_vel) 
 	covariance_estimate_vel.append(updated_covariance_estimate_vel)
-
+'''
 plt.plot(range(len(true_vel)), true_vel, label = "True Velocity")
 plt.plot(range(len(simulated_vel_model)), simulated_vel_model, label = "Velocity Model")
 plt.plot(range(len(observation_model_vel)), observation_model_vel, label = "Sensor Value for Velocity")
 plt.plot(range(len(state_estimate_vel)), state_estimate_vel, label = "Estimated state Velocity")
 plt.legend()
 plt.show()
-
+'''
 ####Position####
 
 def fp(x):
@@ -159,11 +159,18 @@ for k in range(1, 50):
 	state_estimate_pos.append(updated_state_estimate_pos) 
 	covariance_estimate_pos.append(updated_covariance_estimate_pos)
 
-'''
+
 plt.plot(range(len(true_pos)), true_pos, label = "True position")
 plt.plot(range(len(simulated_pos_model)), simulated_pos_model, label = "position Model")
 plt.plot(range(len(observation_model_pos)), observation_model_pos, label = "Sensor Value for position")
 plt.plot(range(len(state_estimate_pos)), state_estimate_pos, label = "Estimated state position")
 plt.legend()
 plt.show()
-'''
+
+
+MSE_sensor = np.sqrt(0.0083*np.sum(np.abs(np.array(observation_model_pos) - np.array(true_pos)))**2)
+MSE_kf = np.sqrt(0.0083*np.sum(np.abs(np.array(state_estimate_pos) - np.array(true_pos)))**2)
+
+print("RMSE from raw sensor readings : ", MSE_sensor)
+print("RMSE from kalman filter output : ", MSE_kf)
+
