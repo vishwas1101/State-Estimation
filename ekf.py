@@ -174,16 +174,5 @@ MSE_ekf = np.sqrt(0.0083*np.sum(np.abs(np.array(state_estimate) - np.array(true_
 print("RMSE from raw sensor readings acceleration : ", MSE_sensor)
 print("RMSE from kalman filter output acceleration : ", MSE_ekf)
 
-MSE_sensor_vel = np.sqrt(0.0083*np.sum(np.abs(np.array(observation_model_vel) - np.array(true_vel)))**2)
-MSE_ekf_vel = np.sqrt(0.0083*np.sum(np.abs(np.array(state_estimate_vel) - np.array(true_vel)))**2)
-
-print("RMSE from raw sensor readings velocity : ", MSE_sensor_vel)
-print("RMSE from kalman filter output velocity : ", MSE_ekf_vel)
-
-MSE_sensor_pos = np.sqrt(0.0083*np.sum(np.abs(np.array(observation_model_pos) - np.array(true_pos)))**2)
-MSE_ekf_pos = np.sqrt(0.0083*np.sum(np.abs(np.array(state_estimate_pos) - np.array(true_pos)))**2)
-
-print("RMSE from raw sensor readings position : ", MSE_sensor_pos)
-print("RMSE from kalman filter output position : ", MSE_ekf_pos)
 
 
